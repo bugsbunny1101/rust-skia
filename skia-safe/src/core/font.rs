@@ -59,7 +59,7 @@ impl Default for Font {
 impl Handle<SkFont> {
 
     pub fn from_typeface(typeface: &Typeface) -> Self {
-        let mut font : SkFont = unsafe { mem::uninitialized() };
+        let mut font : SkFont = unsafe { mem::zeroed() };
         unsafe {
             C_SkFont_ConstructFromTypeface(&mut font, typeface.shared_native())
         }
@@ -67,7 +67,7 @@ impl Handle<SkFont> {
     }
 
     pub fn from_typeface_with_size(typeface: &Typeface, size: scalar) -> Self {
-        let mut font : SkFont = unsafe { mem::uninitialized() };
+        let mut font : SkFont = unsafe { mem::zeroed() };
         unsafe {
             C_SkFont_ConstructFromTypefaceWithSize(&mut font, typeface.shared_native(), size)
         }
@@ -75,7 +75,7 @@ impl Handle<SkFont> {
     }
 
     pub fn from_typeface_with_size_scale_and_skew(typeface: &Typeface, size: scalar, scale: scalar, skew: scalar) -> Self {
-        let mut font : SkFont = unsafe { mem::uninitialized() };
+        let mut font : SkFont = unsafe { mem::zeroed() };
         unsafe {
             C_SkFont_ConstructFromTypefaceWithSizeScaleAndSkew(&mut font, typeface.shared_native(), size, scale, skew)
         }

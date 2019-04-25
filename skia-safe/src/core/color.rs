@@ -250,13 +250,11 @@ impl Color4f {
     }
 
     // TODO: this is the copied implementation, it would probably be better to call the Skia function.
-
     pub fn fits_in_bytes(&self) -> bool {
         debug_assert!(self.a >= 0.0 && self.a <= 1.0);
-        return
-            self.r >= 0.0 && self.r <= 1.0 &&
-                self.g >= 0.0 && self.g <= 1.0 &&
-                self.b >= 0.0 && self.b <= 1.0;
+        self.r >= 0.0 && self.r <= 1.0 &&
+        self.g >= 0.0 && self.g <= 1.0 &&
+        self.b >= 0.0 && self.b <= 1.0
     }
 
     pub fn to_color(&self) -> Color {
