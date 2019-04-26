@@ -1,12 +1,6 @@
 use std::mem;
 use crate::prelude::*;
-use skia_bindings::{
-    SkAlphaType,
-    SkImageInfo,
-    SkColorType,
-    SkYUVColorSpace,
-    C_SkImageInfo_Construct
-};
+use skia_bindings::{SkAlphaType, SkImageInfo, SkColorType, SkYUVColorSpace, C_SkImageInfo_Construct, C_SkImageInfo_Copy};
 use crate::core::{
     ColorSpace,
     IRect,
@@ -109,11 +103,13 @@ impl NativeDrop for SkImageInfo {
 
 impl NativeClone for SkImageInfo {
     fn clone(&self) -> Self {
-        let mut image_info = unsafe { SkImageInfo::new() };
         unsafe {
-            skia_bindings::C_SkImageInfo_Copy(self, &mut image_info);
+            let mut image_info = mem::zeroed();
+            // note SkImageInfo::new() does not link under Linux.
+            C_SkImageInfo_Construct(&mut image_info);
+            C_SkImageInfo_Copy(self, &mut image_info);
+            image_info
         }
-        image_info
     }
 }
 
@@ -122,7 +118,7 @@ impl NativeClone for SkImageInfo {
 impl Default for Handle<SkImageInfo> {
     fn default() -> Self {
         ImageInfo::from_native(unsafe {
-            let mut image_info : SkImageInfo = mem::uninitialized();
+            let mut image_info = mem::zeroed();
             // note SkImageInfo::new() does not link under Linux.
             C_SkImageInfo_Construct(&mut image_info);
             image_info
